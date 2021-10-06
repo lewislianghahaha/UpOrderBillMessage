@@ -19,23 +19,31 @@ namespace UpOrderBillMessage
             {
                 //获取列表上通过复选框勾选的记录
                 var selectedrows = this.ListView.SelectedRowsInfo;
-                //通过循环将选中行的主键进行收集
-                foreach (var row in selectedrows)
+                //判断若没有选择记录,即报出异常提示
+                if (selectedrows.Count == 0)
                 {
-                    if (string.IsNullOrEmpty(flistid))
-                    {
-                        flistid = "'" + Convert.ToString(row.PrimaryKeyValue) + "'";
-                    }
-                    else
-                    {
-                        flistid += "," + "'" + Convert.ToString(row.PrimaryKeyValue) + "'";
-                    }
+                    View.ShowErrMessage("没有选择记录,不能进行更新");
                 }
-                //根据所获取的单号进行更新
-                generate.UpOrderMessage(flistid);
+                else
+                {
+                    //通过循环将选中行的主键进行收集
+                    foreach (var row in selectedrows)
+                    {
+                        if (string.IsNullOrEmpty(flistid))
+                        {
+                            flistid = "'" + Convert.ToString(row.PrimaryKeyValue) + "'";
+                        }
+                        else
+                        {
+                            flistid += "," + "'" + Convert.ToString(row.PrimaryKeyValue) + "'";
+                        }
+                    }
+                    //根据所获取的单号进行更新
+                    generate.UpOrderMessage(flistid);
 
-                //输出
-                View.ShowMessage("已完成更新开票信息操作.");
+                    //输出
+                    View.ShowMessage("已完成更新开票信息操作.");
+                }
             }
         }
     }
